@@ -73,6 +73,9 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
 .names [data-field="partner2"] {
   white-space: pre-line;
 }
+.names [data-field="address"] {
+  white-space: pre-line;
+}
 
 </style>
 
@@ -158,7 +161,7 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
 
 <script>
 /* ===== EDIT YOUR WEDDING DETAILS HERE ===== */
-const CONFIG={partner1:'นาวาอากาศตรี ชัญญาวัจน์ \n สถิตภัทรสมบัติ \n (จิต)',partner2:'นาวาอากาศตรีหญิง สุดารัตน์ \nคัทมาฤษี \n (แคท)',dateDisplay:'DATE TO BE ANNOUNCED',venue:'Rylyn Garden',address:'55 ม.7 ซ.สุขาประชาสรรค์ 2 ต.บางพูด อ.ปากเกร็ด จ.นนทบุรี',mapUrl:'https://maps.app.goo.gl/3jZMFGSwi7KcquH3A',schedule:[{time:'09:00',name:'พิธีการช่วงเช้า',detail:'รายละเอียดรอยืนยัน'},{time:'18:00',name:'งานเลี้ยงฉลองมงคลสมรส',detail:'รายละเอียดรอยืนยัน'}],rsvpEndpoint:'https://script.google.com/macros/s/AKfycbzvB9UBneQ0gxIGYEYcBSpxwVoLyzb43NbiK8kAZmjCniaXMSjA83s24I_sciqI4pI/exec'};
+const CONFIG={partner1:'นาวาอากาศตรี ชัญญาวัจน์ \n สถิตภัทรสมบัติ \n (จิต)',partner2:'นาวาอากาศตรีหญิง สุดารัตน์ \nคัทมาฤษี \n (แคท)',dateDisplay:'DATE TO BE ANNOUNCED',venue:'Rylyn Garden',address:'55 ม.7 ซ.สุขาประชาสรรค์ 2 \nต.บางพูด อ.ปากเกร็ด จ.นนทบุรี',mapUrl:'https://maps.app.goo.gl/3jZMFGSwi7KcquH3A',schedule:[{time:'09:00',name:'พิธีการช่วงเช้า',detail:'รายละเอียดรอยืนยัน'},{time:'18:00',name:'งานเลี้ยงฉลองมงคลสมรส',detail:'รายละเอียดรอยืนยัน'}],rsvpEndpoint:'https://script.google.com/macros/s/AKfycbzvB9UBneQ0gxIGYEYcBSpxwVoLyzb43NbiK8kAZmjCniaXMSjA83s24I_sciqI4pI/exec'};
 /* For live RSVP: supply a secure backend endpoint in CONFIG.rsvpEndpoint. Never put secrets in this file. */
 document.querySelectorAll('[data-field]').forEach(el=>{const k=el.dataset.field;el.textContent=k==='footerNames'?`${CONFIG.partner1} & ${CONFIG.partner2}`:CONFIG[k]});document.getElementById('mapLink').href=CONFIG.mapUrl;document.getElementById('scheduleItems').replaceChildren(...CONFIG.schedule.map(item=>{const d=document.createElement('div');d.className='event';const t=document.createElement('strong');t.textContent=item.time;const n=document.createElement('div');n.textContent=item.name;const s=document.createElement('div');s.className='small';s.textContent=item.detail;d.append(t,n,s);return d}));
 const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(e=>observer.observe(e));
