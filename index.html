@@ -142,10 +142,13 @@ button:hover{background:#6c1522}button:disabled{opacity:.6;cursor:wait}
 footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--muted);font-size:13px}
 .nav{position:absolute;bottom:25px;font-size:10px;letter-spacing:.2em;color:var(--wine)}
 @media (prefers-reduced-motion: no-preference) {
-  .reveal.visible { animation: section-enter .7s ease-out; }
-  @keyframes section-enter {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+  .scroll-enter {
+    animation: invitation-rise 950ms cubic-bezier(.2,.7,.25,1) backwards;
+    animation-delay: var(--enter-delay, 0ms);
+  }
+  @keyframes invitation-rise {
+    from { opacity: 0; transform: translateY(34px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
@@ -195,7 +198,14 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
 <meta property="og:image" content="https://kat-jit.github.io/monogram.png">
 <meta property="og:image:alt" content="ภาพปกการ์ดเชิญงานแต่งงาน">
 
+<style>
+#cover-sound {width:auto; margin:12px auto 0; padding:8px 16px; min-height:44px; border-radius:999px; font:inherit}
+#cover-sound[hidden] {display:none}
+</style>
 </head><body>
+    <audio id="wedding-music"
+           src="./Forever and Ever and Always (The Softer Version).mp3"
+           autoplay preload="auto" loop></audio>
 <section class="hero" id="home">
 	<div class="frame">
 		<div class="eyebrow hero-kicker">THE WEDDING CELEBRATION OF</div>
@@ -205,6 +215,7 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
 		<div class="names serif"><span data-field="partner2">ชื่อเจ้าสาว</span><span><br>♡<br></span> <span data-field="partner1">ชื่อเจ้าบ่าว</span></div>
 		<p>ด้วยความยินดี ขอเรียนเชิญร่วมเป็นเกียรติ<br>ในพิธีมงคลสมรสของเรา</p>
 		<a class="cta" id="open-invitation" href="#countdown">VIEW INVITATION ↓</a>
+    <button id="cover-sound" type="button" hidden>♫ แตะเพื่อเปิดเพลง</button>
 		<!-- <div class="nav">(เลื่อนลงเพื่อดูรายละเอียด)</div> -->
 	</div>
 </section>
@@ -285,9 +296,7 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
     <div class="divider"></div>
 
     <p class="song-title" lang="en">Forever and Ever and Always</p>
-    <audio id="wedding-music"
-           src="./Forever and Ever and Always (The Softer Version).mp3"
-           preload="auto" loop></audio>
+
 
     <button type="button" id="song-toggle">♫ กดฟังเพลงของเรา</button>
     <p id="song-status" class="small" role="status"></p>
@@ -332,8 +341,11 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
     const music = document.getElementById("wedding-music");
     const button = document.getElementById("song-toggle");
     const status = document.getElementById("song-status");
+    const coverSound = document.getElementById("cover-sound");
+    coverSound.addEventListener("click", playSong);
+
     function startOnTap(event) {
-      if (!button.contains(event.target) && music.paused) playSong();
+      if (!button.contains(event.target) && !coverSound.contains(event.target) && music.paused) playSong();
     }
 
     function stopListeningForTap() {
@@ -346,6 +358,7 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
         await music.play();
       } catch (error) {
         if (error.name === "AbortError") return;
+        coverSound.hidden = error.name !== "NotAllowedError";
         status.textContent = error.name === "NotAllowedError"
           ? "แตะบนการ์ดเพื่อเปิดเพลง"
           : "โหลดเพลงไม่สำเร็จ กรุณาลองอีกครั้ง";
@@ -353,6 +366,7 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
     }
 
     music.addEventListener("playing", () => {
+      coverSound.hidden = true;
       stopListeningForTap();
       status.textContent = "";
       button.textContent = "Ⅱ พักเพลง";
@@ -457,10 +471,21 @@ document.querySelectorAll('[data-field]').forEach(el=>{const k=el.dataset.field;
 if ('IntersectionObserver' in window) {
   const observer = new IntersectionObserver(entries => {
     for (const entry of entries) {
-      entry.target.classList.toggle('visible', entry.isIntersecting);
+      entry.target.classList.toggle('scroll-enter', entry.isIntersecting);
     }
+  }, { rootMargin: '0px 0px -10% 0px' });
+
+  const selector = [
+    '.section-inner.reveal > :not(audio):not(script):not(.schedule):not([role="status"])',
+    '#scheduleItems > .event',
+    'footer > *'
+  ].join(', ');
+
+  document.querySelectorAll(selector).forEach(element => {
+    const delay = element.matches('h2, .sub') ? 0 : 90;
+    element.style.setProperty('--enter-delay', delay + 'ms');
+    observer.observe(element);
   });
-  document.querySelectorAll('.section-inner.reveal').forEach(el => observer.observe(el));
 }
 document.getElementById('rsvpForm').addEventListener('submit',async e=>{
  e.preventDefault();const form=e.currentTarget,note=document.getElementById('rsvpNote'),btn=form.querySelector('button[type="submit"]');
