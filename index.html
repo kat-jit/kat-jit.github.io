@@ -67,7 +67,22 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
 .frame p{font-size:13px}
 }
 .wedding-hashtag{font-family:'Noto Sans Thai',sans-serif;font-weight:500;color:#8d1d2d;font-size:clamp(17px,3vw,22px);letter-spacing:.015em;margin:22px 0 4px;overflow-wrap:anywhere}
+.names [data-field="partner1"] {
+  white-space: pre-line;
+}
+.names [data-field="partner2"] {
+  white-space: pre-line;
+}
+
 </style>
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="ขอเชิญร่วมงานแต่งงานของเรา">
+<meta property="og:description" content="ร่วมฉลองวันพิเศษของเราที่  Rylyn Garden">
+
+<meta property="og:image" content="https://kst-jit.github.io/monogram.png">
+<meta property="og:image:alt" content="ภาพปกการ์ดเชิญงานแต่งงาน">
+
 </head><body>
 <section class="hero" id="home">
 	<div class="frame">
@@ -75,7 +90,7 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
 		<img class="monogram" src="monogram.png" alt="KAT JIT wedding monogram" width="560" height="470">
 		<div class="divider"></div>
 		<div class="eyebrow">TOGETHER WITH OUR FAMILIES</div>
-		<div class="names serif"><span data-field="partner1">ชื่อเจ้าบ่าว</span><span><br>♡<br></span> <span data-field="partner2">ชื่อเจ้าสาว</span></div>
+		<div class="names serif"><span data-field="partner2">ชื่อเจ้าสาว</span><span><br>♡<br></span> <span data-field="partner1">ชื่อเจ้าบ่าว</span></div>
 		<p>ด้วยความยินดี ขอเรียนเชิญร่วมเป็นเกียรติ<br>ในพิธีมงคลสมรสของเรา</p>
 		<div class="divider"></div><div class="date serif" data-field="dateDisplay">DATE TO BE ANNOUNCED</div>
 		<a class="cta" href="#details">VIEW INVITATION ↓</a>
@@ -111,7 +126,7 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
 <footer><div class="script" style="font-size:46px;color:#8d1d2d">ขอขอบคุณทุกท่านจากใจ</div><p class="wedding-hashtag">#KJHappilyEverAfter</p></footer>
 <script>
 /* ===== EDIT YOUR WEDDING DETAILS HERE ===== */
-const CONFIG={partner1:'นาวาอากาศตรี ชัญญาวัจน์  สถิตภัทรสมบัติ',partner2:'นาวาอากาศตรีหญิง สุดารัตน์ คัทมาฤษี',dateDisplay:'DATE TO BE ANNOUNCED',venue:'Rylyn Garden',address:'55 ม.7 ซ.สุขาประชาสรรค์ 2 ต.บางพูด อ.ปากเกร็ด จ.นนทบุรี',mapUrl:'https://maps.app.goo.gl/3jZMFGSwi7KcquH3A',schedule:[{time:'09:00',name:'พิธีการช่วงเช้า',detail:'รายละเอียดรอยืนยัน'},{time:'18:00',name:'งานเลี้ยงฉลองมงคลสมรส',detail:'รายละเอียดรอยืนยัน'}],rsvpEndpoint:'https://script.google.com/macros/s/AKfycbzvB9UBneQ0gxIGYEYcBSpxwVoLyzb43NbiK8kAZmjCniaXMSjA83s24I_sciqI4pI/exec'};
+const CONFIG={partner1:'นาวาอากาศตรี ชัญญาวัจน์ \n สถิตภัทรสมบัติ \n (จิต)',partner2:'นาวาอากาศตรีหญิง สุดารัตน์ \nคัทมาฤษี \n (แคท)',dateDisplay:'DATE TO BE ANNOUNCED',venue:'Rylyn Garden',address:'55 ม.7 ซ.สุขาประชาสรรค์ 2 ต.บางพูด อ.ปากเกร็ด จ.นนทบุรี',mapUrl:'https://maps.app.goo.gl/3jZMFGSwi7KcquH3A',schedule:[{time:'09:00',name:'พิธีการช่วงเช้า',detail:'รายละเอียดรอยืนยัน'},{time:'18:00',name:'งานเลี้ยงฉลองมงคลสมรส',detail:'รายละเอียดรอยืนยัน'}],rsvpEndpoint:'https://script.google.com/macros/s/AKfycbzvB9UBneQ0gxIGYEYcBSpxwVoLyzb43NbiK8kAZmjCniaXMSjA83s24I_sciqI4pI/exec'};
 /* For live RSVP: supply a secure backend endpoint in CONFIG.rsvpEndpoint. Never put secrets in this file. */
 document.querySelectorAll('[data-field]').forEach(el=>{const k=el.dataset.field;el.textContent=k==='footerNames'?`${CONFIG.partner1} & ${CONFIG.partner2}`:CONFIG[k]});document.getElementById('mapLink').href=CONFIG.mapUrl;document.getElementById('scheduleItems').replaceChildren(...CONFIG.schedule.map(item=>{const d=document.createElement('div');d.className='event';const t=document.createElement('strong');t.textContent=item.time;const n=document.createElement('div');n.textContent=item.name;const s=document.createElement('div');s.className='small';s.textContent=item.detail;d.append(t,n,s);return d}));
 const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(e=>observer.observe(e));
