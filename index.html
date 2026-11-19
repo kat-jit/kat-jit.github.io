@@ -122,8 +122,40 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
 	</div>
 </section>
 
-<section class="rsvp" id="rsvp"><div class="section-inner reveal"><h2>RSVP</h2><p style="font-size:20px">เพื่อเป็นการให้เราได้จัดเตรียมการต้อนรับแขกทุกท่านได้อย่างทั่วถึง ขอความกรุณาช่วยตอบแบบสอบถามเข้าร่วมงานให้เราด้วยนะครับ/ค่ะ</p><form id="rsvpForm"><label for="guest">ชื่อ - นามสกุล</label><input id="guest" name="guest" required placeholder="ชื่อของคุณ"><label for="attendance">การเข้าร่วมงาน</label><select id="attendance" name="attendance"><option value="เข้าร่วม">ยินดีเข้าร่วม</option><option value="ไม่สามารถเข้าร่วม">ไม่สามารถเข้าร่วมได้</option></select><label for="count">จำนวนผู้เข้าร่วม (รวมตัวคุณ)</label><input id="count" name="count" type="number" min="1" max="20" value="1"><label for="message">ข้อความถึงคู่บ่าวสาว (ไม่บังคับ)</label><textarea id="message" name="message" rows="3"></textarea><button type="submit">SEND RSVP</button><p class="small" id="rsvpNote" role="status" style="font-size:20px">กรอกข้อมูลเพื่อส่งคำตอบรับไปยัง Google Sheets</p></form></div></section>
-<footer><div class="script" style="font-size:46px;color:#8d1d2d">ขอขอบคุณทุกท่านจากใจ</div><p class="wedding-hashtag">#KJHappilyEverAfter</p></footer>
+<section class="rsvp" id="rsvp">
+	<div class="section-inner reveal">
+		<h2>RSVP</h2>
+		<p style="font-size:20px">เพื่อเป็นการให้เราได้จัดเตรียมการต้อนรับแขกทุกท่านได้อย่างทั่วถึง ขอความกรุณาช่วยตอบแบบสอบถามเข้าร่วมงานให้เราด้วยนะครับ/ค่ะ</p>
+		<form id="rsvpForm">
+			<label for="guest">ชื่อ - นามสกุล</label>
+			<input id="guest" name="guest" required placeholder="ชื่อของคุณ">
+			<label for="guestSide">คุณเป็นแขกของฝั่งไหน</label>
+			<select id="guestSide" name="guestSide" required>
+				<option value="" selected disabled>กรุณาเลือก</option>
+				<option value="เจ้าบ่าว">เจ้าบ่าว</option>
+				<option value="เจ้าสาว">เจ้าสาว</option>
+				<option value="เจ้าสาว">เจ้าบ่าวและเจ้าสาว</option>
+			</select>
+			<label for="attendance">การเข้าร่วมงาน</label>
+			<select id="attendance" name="attendance">
+				<option value="เข้าร่วม">ยินดีเข้าร่วม</option>
+				<option value="ไม่สามารถเข้าร่วม">ไม่สามารถเข้าร่วมได้</option>
+			</select>
+			<label for="count">จำนวนผู้เข้าร่วม (รวมตัวคุณ)</label>
+			<input id="count" name="count" type="number" min="1" max="20" value="1">
+			<label for="message">ข้อความถึงคู่บ่าวสาว (ไม่บังคับ)</label>
+			<textarea id="message" name="message" rows="3"></textarea>
+			<button type="submit">SEND RSVP</button>
+			<p class="small" id="rsvpNote" role="status" style="font-size:20px">กรอกข้อมูลเพื่อส่งคำตอบรับไปยัง Google Sheets</p>
+		</form>
+	</div>
+</section>
+
+<footer>
+	<div class="script" style="font-size:46px;color:#8d1d2d">ขอขอบคุณทุกท่านจากใจ</div>
+	<p class="wedding-hashtag">#KJHappilyEverAfter</p>
+</footer>
+
 <script>
 /* ===== EDIT YOUR WEDDING DETAILS HERE ===== */
 const CONFIG={partner1:'นาวาอากาศตรี ชัญญาวัจน์ \n สถิตภัทรสมบัติ \n (จิต)',partner2:'นาวาอากาศตรีหญิง สุดารัตน์ \nคัทมาฤษี \n (แคท)',dateDisplay:'DATE TO BE ANNOUNCED',venue:'Rylyn Garden',address:'55 ม.7 ซ.สุขาประชาสรรค์ 2 ต.บางพูด อ.ปากเกร็ด จ.นนทบุรี',mapUrl:'https://maps.app.goo.gl/3jZMFGSwi7KcquH3A',schedule:[{time:'09:00',name:'พิธีการช่วงเช้า',detail:'รายละเอียดรอยืนยัน'},{time:'18:00',name:'งานเลี้ยงฉลองมงคลสมรส',detail:'รายละเอียดรอยืนยัน'}],rsvpEndpoint:'https://script.google.com/macros/s/AKfycbzvB9UBneQ0gxIGYEYcBSpxwVoLyzb43NbiK8kAZmjCniaXMSjA83s24I_sciqI4pI/exec'};
