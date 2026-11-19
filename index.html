@@ -95,18 +95,192 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
 		<div class="eyebrow">TOGETHER WITH OUR FAMILIES</div>
 		<div class="names serif"><span data-field="partner2">ชื่อเจ้าสาว</span><span><br>♡<br></span> <span data-field="partner1">ชื่อเจ้าบ่าว</span></div>
 		<p>ด้วยความยินดี ขอเรียนเชิญร่วมเป็นเกียรติ<br>ในพิธีมงคลสมรสของเรา</p>
-		<div class="divider"></div><div class="date serif" data-field="dateDisplay">DATE TO BE ANNOUNCED</div>
-		<a class="cta" href="#details">VIEW INVITATION ↓</a>
-		<div class="nav">(เลื่อนลงเพื่อดูรายละเอียด)</div>
+		<a class="cta" id="open-invitation" href="#countdown">VIEW INVITATION ↓</a>
+		<!-- <div class="nav">(เลื่อนลงเพื่อดูรายละเอียด)</div> -->
 	</div>
 </section>
 
-<section class="story" id="details"><div class="section-inner reveal"><div class="sub">A celebration of love</div><h2>Our Story</h2><p>จากเรื่องราวของคนสองคน สู่การเริ่มต้นบทใหม่ด้วยกัน เราขอเชิญทุกท่านมาร่วมแบ่งปันความสุขและความทรงจำในวันพิเศษของเรา</p></div></section>
-<section id="schedule"><div class="section-inner reveal"><h2>กำหนดการ</h2><div class="schedule" id="scheduleItems"></div><p class="small">กำหนดการอาจมีการเปลี่ยนแปลงตามความเหมาะสม</p></div></section>
+<style>
+  #countdown {
+    text-align: center;
+    background: var(--white);
+    color: var(--ink);
+    font-family: "Noto Sans Thai", sans-serif;
+  }
+
+  #countdown h2 {
+    color: var(--wine);
+    font-size: clamp(26px, 5vw, 46px);
+  }
+
+  #countdown .wedding-clock {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    max-width: 520px;
+    margin: 24px auto;
+  }
+
+  #countdown .wedding-clock > div + div {
+    border-left: 1px solid var(--line);
+  }
+
+  #countdown .wedding-clock strong {
+    display: block;
+    color: var(--wine);
+    font-size: clamp(30px, 7vw, 56px);
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+  }
+
+  #countdown .wedding-clock small {
+    color: var(--muted);
+  }
+
+  #countdown .song-title {
+    margin: 0;
+    color: var(--wine);
+    font-size: clamp(21px, 4vw, 30px);
+  }
+
+  #song-toggle {
+    width: auto;
+    min-height: 44px;
+    margin: 12px 0 0;
+    padding: 8px 20px;
+    border-radius: 999px;
+    font: inherit;
+  }
+
+  #countdown [hidden] {
+    display: none;
+  }
+</style>
+
+<section id="countdown"
+         data-start="2027-05-30T09:09:00+07:00"
+         aria-labelledby="countdown-title">
+  <div class="section-inner">
+    <h2 id="countdown-title">นับถอยหลัง สู่วันของเรา</h2>
+
+    <div class="wedding-clock" role="timer"
+         aria-label="เวลาที่เหลือก่อนพิธียกน้ำชา" hidden>
+      <div><strong>00</strong><small>วัน</small></div>
+      <div><strong>00</strong><small>ชั่วโมง</small></div>
+      <div><strong>00</strong><small>นาที</small></div>
+      <div><strong>00</strong><small>วินาที</small></div>
+    </div>
+
+    <p id="wedding-day-note" hidden>ถึงวันสำคัญของเราแล้ว ♡</p>
+
+    <div class="divider"></div>
+
+    <p class="song-title" lang="en">Forever and Ever and Always</p>
+    <audio id="wedding-music"
+           src="./Forever and Ever and Always (The Softer Version).mp3"
+           preload="none" loop></audio>
+
+    <button type="button" id="song-toggle">♫ กดฟังเพลงของเรา</button>
+    <p id="song-status" class="small" role="status"></p>
+  </div>
+</section>
+
+<script>
+  (() => {
+    // นับถอยหลังตามวันและเวลาไทยที่ระบุใน data-start
+    const section = document.getElementById("countdown");
+    const target = Date.parse(section.dataset.start);
+    const clock = section.querySelector(".wedding-clock");
+    const fields = clock.querySelectorAll("strong");
+
+    function updateClock() {
+      const remaining = Math.ceil((target - Date.now()) / 1000);
+
+      if (remaining <= 0) {
+        clock.hidden = true;
+        document.getElementById("wedding-day-note").hidden = false;
+        return;
+      }
+
+      const values = [
+        Math.floor(remaining / 86400),
+        Math.floor(remaining / 3600) % 24,
+        Math.floor(remaining / 60) % 60,
+        remaining % 60
+      ];
+
+      fields.forEach((field, index) => {
+        field.textContent = String(values[index]).padStart(2, "0");
+      });
+
+      clock.hidden = false;
+      setTimeout(updateClock, 1000);
+    }
+
+    updateClock();
+
+    // ปุ่มเปิดการ์ดและปุ่มใต้ชื่อเพลงใช้เครื่องเล่นเดียวกัน
+    const music = document.getElementById("wedding-music");
+    const button = document.getElementById("song-toggle");
+    const status = document.getElementById("song-status");
+    const invitation = document.getElementById("open-invitation");
+    let usedSongButton = false;
+
+    async function playSong() {
+      status.textContent = "";
+      try {
+        await music.play();
+      } catch (error) {
+        if (error.name === "AbortError") return;
+        status.textContent = error.name === "NotAllowedError"
+          ? "แตะปุ่มเพื่อเปิดเพลง"
+          : "โหลดเพลงไม่สำเร็จ กรุณาลองอีกครั้ง";
+      }
+    }
+
+    music.addEventListener("playing", () => {
+      button.textContent = "Ⅱ พักเพลง";
+    });
+
+    music.addEventListener("pause", () => {
+      button.textContent = "♫ เล่นเพลงต่อ";
+    });
+
+    button.addEventListener("click", () => {
+      usedSongButton = true;
+      if (music.paused) playSong();
+      else music.pause();
+    });
+
+    invitation?.addEventListener("click", () => {
+      if (!usedSongButton) playSong();
+    }, { once: true });
+  })();
+</script>
+
+<section class="story" id="details">
+	<div class="section-inner reveal">
+		<div class="sub">A celebration of love</div>
+		<h2>Our Story</h2>
+		<div class="divider"></div>
+		<p>จากเรื่องราวของคนสองคน สู่การเริ่มต้นบทใหม่ด้วยกัน เราขอเชิญทุกท่านมาร่วมแบ่งปันความสุขและความทรงจำในวันพิเศษของเรา</p>
+	</div>
+</section>
+
+<section id="schedule">
+	<div class="section-inner reveal">
+		<h2>กำหนดการ</h2>
+		<div class="divider"></div>
+		<div class="date serif" data-field="dateDisplay">DATE TO BE ANNOUNCED</div>
+		<div class="schedule" id="scheduleItems" style="font-size:30px"></div>
+		<!-- <p class="small">กำหนดการอาจมีการเปลี่ยนแปลงตามความเหมาะสม</p> -->
+	</div>
+</section>
 
 <section class="venue" id="location">
 	<div class="section-inner reveal">
 		<h2>สถานที่จัดงาน</h2>
+		<div class="divider"></div>
 		<p class="venue-name serif" data-field="venue" style="font-size:25px">สถานที่จัดงาน</p>
 		<p data-field="address" style="font-size:25px">รายละเอียดสถานที่จะแจ้งให้ทราบอีกครั้ง</p>
 		<div class="venue-map">
@@ -128,6 +302,7 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
 <section class="rsvp" id="rsvp">
 	<div class="section-inner reveal">
 		<h2>RSVP</h2>
+		<div class="divider"></div>
 		<p style="font-size:20px">เพื่อเป็นการให้เราได้จัดเตรียมการต้อนรับแขกทุกท่านได้อย่างทั่วถึง ขอความกรุณาช่วยตอบแบบสอบถามเข้าร่วมงานให้เราด้วยนะครับ/ค่ะ</p>
 		<form id="rsvpForm">
 			<label for="guest">ชื่อ - นามสกุล</label>
@@ -161,7 +336,7 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
 
 <script>
 /* ===== EDIT YOUR WEDDING DETAILS HERE ===== */
-const CONFIG={partner1:'นาวาอากาศตรี ชัญญาวัจน์ \n สถิตภัทรสมบัติ \n (จิต)',partner2:'นาวาอากาศตรีหญิง สุดารัตน์ \nคัทมาฤษี \n (แคท)',dateDisplay:'DATE TO BE ANNOUNCED',venue:'Rylyn Garden',address:'55 ม.7 ซ.สุขาประชาสรรค์ 2 \nต.บางพูด อ.ปากเกร็ด จ.นนทบุรี',mapUrl:'https://maps.app.goo.gl/3jZMFGSwi7KcquH3A',schedule:[{time:'09:00',name:'พิธีการช่วงเช้า',detail:'รายละเอียดรอยืนยัน'},{time:'18:00',name:'งานเลี้ยงฉลองมงคลสมรส',detail:'รายละเอียดรอยืนยัน'}],rsvpEndpoint:'https://script.google.com/macros/s/AKfycbzvB9UBneQ0gxIGYEYcBSpxwVoLyzb43NbiK8kAZmjCniaXMSjA83s24I_sciqI4pI/exec'};
+const CONFIG={partner1:'นาวาอากาศตรี ชัญญาวัจน์ \n สถิตภัทรสมบัติ \n (จิต)',partner2:'นาวาอากาศตรีหญิง สุดารัตน์ \nคัทมาฤษี \n (แคท)',dateDisplay:'วันอาทิตย์ที่ 30 พฤษภาคม 2570',venue:'Rylyn Garden',address:'55 ม.7 ซ.สุขาประชาสรรค์ 2 \nต.บางพูด อ.ปากเกร็ด จ.นนทบุรี',mapUrl:'https://maps.app.goo.gl/3jZMFGSwi7KcquH3A',schedule:[{time:'09:09',name:'พิธียกน้ำชา',detail:''},{time:'11:30',name:'ร่วมรับประทานอาหาร',detail:''}],rsvpEndpoint:'https://script.google.com/macros/s/AKfycbzvB9UBneQ0gxIGYEYcBSpxwVoLyzb43NbiK8kAZmjCniaXMSjA83s24I_sciqI4pI/exec'};
 /* For live RSVP: supply a secure backend endpoint in CONFIG.rsvpEndpoint. Never put secrets in this file. */
 document.querySelectorAll('[data-field]').forEach(el=>{const k=el.dataset.field;el.textContent=k==='footerNames'?`${CONFIG.partner1} & ${CONFIG.partner2}`:CONFIG[k]});document.getElementById('mapLink').href=CONFIG.mapUrl;document.getElementById('scheduleItems').replaceChildren(...CONFIG.schedule.map(item=>{const d=document.createElement('div');d.className='event';const t=document.createElement('strong');t.textContent=item.time;const n=document.createElement('div');n.textContent=item.name;const s=document.createElement('div');s.className='small';s.textContent=item.detail;d.append(t,n,s);return d}));
 const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(e=>observer.observe(e));
