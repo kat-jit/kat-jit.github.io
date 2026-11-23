@@ -483,6 +483,9 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
         <form id="giftForm">
           <label for="transferName">ชื่อผู้โอน</label>
           <input id="transferName" name="transferName" type="text" maxlength="120" required>
+          <label for="transferAmount">จำนวนเงิน (บาท)</label>
+          <input id="transferAmount" name="transferAmount" type="number"
+                 inputmode="decimal" min="0.01" step="0.01" required>
           <label for="transferTime">วันและเวลาโอน (เวลาไทย)</label>
           <input id="transferTime" name="transferTime" type="datetime-local" required>
           <button type="submit">ส่งข้อมูลการโอน</button>
@@ -558,7 +561,7 @@ document.getElementById('giftForm').addEventListener('submit', async event => {
       mode: 'no-cors',
       body: payload
     });
-    status.textContent = 'ส่งข้อมูลเรียบร้อยแล้ว ขอบพระคุณครับ/ค่ะ';
+    status.textContent = 'ส่งคำขอแจ้งโอนแล้ว กรุณารอเจ้าภาพตรวจสอบ';
   } catch {
     status.textContent = 'ส่งข้อมูลไม่ได้ กรุณาลองอีกครั้ง';
   } finally {
