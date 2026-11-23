@@ -517,7 +517,7 @@ footer .wedding-hashtag{color:#fae7ea}
           <label for="transferTime">วันและเวลาโอน (เวลาไทย)</label>
           <input id="transferTime" name="transferTime" type="datetime-local" required>
           <button type="submit">ส่งข้อมูลการโอน</button>
-          <p class="small" id="giftStatus" role="status"></p>
+          <p class="small" id="giftStatus" role="status" style="font-size:20px"></p>
         </form>
       </div>
     </details>
@@ -589,7 +589,7 @@ document.getElementById('giftForm').addEventListener('submit', async event => {
       mode: 'no-cors',
       body: payload
     });
-    status.textContent = 'ส่งคำขอแจ้งโอนแล้ว กรุณารอเจ้าภาพตรวจสอบ';
+    status.textContent = 'เรียบร้อยแล้ว ขอบพระคุณครับ/ค่ะ';
   } catch {
     status.textContent = 'ส่งข้อมูลไม่ได้ กรุณาลองอีกครั้ง';
   } finally {
