@@ -129,8 +129,35 @@ section:not(.hero){padding:105px 20px;text-align:center}.section-inner{max-width
 h2{font-weight:400;font-size:clamp(40px,6vw,66px);margin:12px 0 28px;color:var(--wine)}
 .sub{font-size:12px;letter-spacing:.24em;color:var(--wine);text-transform:uppercase}
 .story{background:var(--soft)}.story p{max-width:540px;margin:0 auto;line-height:2.1}
-.schedule{display:grid;gap:14px;max-width:490px;margin:38px auto}.event{padding:25px;border-top:1px solid var(--line)}
-.event strong{display:block;font-size:27px;color:var(--wine);font-weight:400}
+#schedule { background:var(--soft); }
+.schedule {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr));
+  gap:clamp(10px,3vw,24px);
+  max-width:660px;
+  margin:34px auto 0;
+}
+.schedule .event {
+  display:grid;
+  align-content:center;
+  gap:8px;
+  min-height:clamp(132px,23vw,188px);
+  padding:16px 10px;
+  border:1px solid var(--line);
+  border-top:3px solid var(--wine);
+  border-radius:16px;
+  background:var(--white);
+  box-shadow:0 8px 22px rgba(61,37,41,.06);
+}
+.schedule .event strong {
+  color:var(--wine);
+  font-size:clamp(30px,6vw,52px);
+  font-weight:500;
+  font-variant-numeric:tabular-nums;
+  line-height:1.15;
+}
+.schedule .event > div:not(.small) { font-size:clamp(14px,3vw,20px); font-weight:500; }
+.schedule .small:empty { display:none; }
 .venue{background:var(--wine);color:white}.venue h2,.venue .sub{color:white}.venue .cta{border-color:white;color:white}.venue .cta:hover{background:white;color:var(--wine)}
 .venue-name{font-size:27px}.small{font-size:13px;color:var(--muted)}.venue .small{color:#f0dfe2}
 .rsvp{background:var(--white)}form{max-width:480px;margin:36px auto;text-align:left}
@@ -139,7 +166,8 @@ input,select,textarea{width:100%;border:1px solid #d9bdc3;border-radius:0;backgr
 input:focus,select:focus,textarea:focus{outline:1px solid var(--wine);border-color:var(--wine)}
 button{font:inherit;cursor:pointer;background:var(--wine);color:#fff;border:1px solid var(--wine);padding:16px 25px;width:100%;margin-top:24px;letter-spacing:.1em;transition:.25s}
 button:hover{background:#6c1522}button:disabled{opacity:.6;cursor:wait}
-footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--muted);font-size:13px}
+footer{text-align:center;padding:55px 20px;background:var(--wine);color:var(--white);font-size:13px}
+footer .wedding-hashtag{color:#fae7ea}
 .nav{position:absolute;bottom:25px;font-size:10px;letter-spacing:.2em;color:var(--wine)}
 @media (prefers-reduced-motion: no-preference) {
   .scroll-enter {
@@ -190,7 +218,7 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
 }
 
 
-#family-gift { background:var(--soft); }
+#family-gift { background:#f5e5e9; }
 #family-gift .gift-intro { max-width:35rem; margin:0 auto 1.5rem; line-height:1.8; }
 .gift-envelope summary { display:grid; justify-items:center; gap:.85rem; width:fit-content; margin:auto; cursor:pointer; color:var(--wine); list-style:none; font-weight:600; }
 .gift-envelope summary::-webkit-details-marker { display:none; }
@@ -413,7 +441,7 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
 		<h2>กำหนดการ</h2>
 		<div class="divider"></div>
 		<div class="date serif" data-field="dateDisplay">DATE TO BE ANNOUNCED</div>
-		<div class="schedule" id="scheduleItems" style="font-size:30px"></div>
+		<div class="schedule" id="scheduleItems"></div>
 		<!-- <p class="small">กำหนดการอาจมีการเปลี่ยนแปลงตามความเหมาะสม</p> -->
 	</div>
 </section>
@@ -497,7 +525,7 @@ footer{text-align:center;padding:55px 20px;background:var(--soft);color:var(--mu
 </section>
 
 <footer>
-	<div class="script" style="font-size:46px;color:#8d1d2d">ขอขอบคุณทุกท่านจากใจ</div>
+	<div class="script" style="font-size:46px">ขอขอบคุณทุกท่านจากใจ</div>
 	<p class="wedding-hashtag">#KJHappilyEverAfter</p>
 </footer>
 
